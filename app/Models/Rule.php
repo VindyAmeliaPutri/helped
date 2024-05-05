@@ -8,6 +8,5 @@ class Rule extends Model
 {
     public $timestamps = false;
 
-    protected $guarded = ['id','diseaase_id','symptom_id'];
-    
+    protected $guarded = ['id', 'diseaase_id', 'symptom_id'];
 }

@@ -3,9 +3,9 @@
 namespace App\Filament\User\Pages;
 
 use App\Models\Calculation as ModelsCalculation;
-use App\Models\Symptom;
-use App\Models\Rule;
 use App\Models\Disease;
+use App\Models\Rule;
+use App\Models\Symptom;
 use Filament\Actions\Action;
 use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\TextInput;
@@ -43,10 +43,10 @@ class Calculation extends Page
             $tempInputs = [];
             foreach ($chunk as $symptom) {
                 $input = [
-                    TextInput::make('symptom' . $counter)
+                    TextInput::make('symptom'.$counter)
                         ->default($symptom['id'])
                         ->hidden(),
-                    Radio::make('answer' . $counter)
+                    Radio::make('answer'.$counter)
                         ->label($symptom['name'])
                         ->inline()
                         ->required()
@@ -97,8 +97,8 @@ class Calculation extends Page
             // Extract answers from the questionnaire data
             $questionnaireValues = [];
             for ($i = 0; $i < count($data) / 2; $i++) {
-                $answerKey = 'answer' . $i;
-                $questionnaireValues[] = doubleval($data[$answerKey]);
+                $answerKey = 'answer'.$i;
+                $questionnaireValues[] = floatval($data[$answerKey]);
             }
 
             // Retrieve all symptoms
@@ -109,7 +109,7 @@ class Calculation extends Page
             foreach ($symptoms as $key => $symptom) {
                 $items[$symptom->id] = [
                     'name' => $symptom->name,
-                    'value' => doubleval($questionnaireValues[$key]) * $symptom->belief,
+                    'value' => floatval($questionnaireValues[$key]) * $symptom->belief,
                 ];
             }
 
@@ -130,7 +130,7 @@ class Calculation extends Page
                 $diseaseId = $rule['disease_id'];
                 $symptomId = $rule['symptom_id'];
 
-                if (!isset($items[$symptomId])) {
+                if (! isset($items[$symptomId])) {
                     continue; // Skip if symptom not found
                 }
 
@@ -180,7 +180,7 @@ class Calculation extends Page
 
             $calculation = ModelsCalculation::create([
                 'user_id' => auth()->user()->id, 'disease_id' => $disease,
-                'value' => $maxScore
+                'value' => $maxScore,
             ]);
 
             foreach ($result as $key => $disease) {

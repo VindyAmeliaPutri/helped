@@ -8,5 +8,5 @@ class Symptom extends Model
 {
     public $timestamps = false;
 
-    protected $guarded = ['id','belief', 'disbelief'];
+    protected $guarded = ['id', 'belief', 'disbelief'];
 }
