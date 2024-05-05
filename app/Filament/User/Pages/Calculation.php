@@ -2,6 +2,7 @@
 
 namespace App\Filament\User\Pages;
 
+use App\Models\Calculation as ModelsCalculation;
 use App\Models\Symptom;
 use App\Models\Rule;
 use App\Models\Disease;
@@ -42,10 +43,10 @@ class Calculation extends Page
             $tempInputs = [];
             foreach ($chunk as $symptom) {
                 $input = [
-                    TextInput::make('symptom'.$counter)
+                    TextInput::make('symptom' . $counter)
                         ->default($symptom['id'])
                         ->hidden(),
-                    Radio::make('answer'.$counter)
+                    Radio::make('answer' . $counter)
                         ->label($symptom['name'])
                         ->inline()
                         ->required()
@@ -92,17 +93,17 @@ class Calculation extends Page
     {
         try {
             $data = $this->data;
-    
+
             // Extract answers from the questionnaire data
             $questionnaireValues = [];
             for ($i = 0; $i < count($data) / 2; $i++) {
                 $answerKey = 'answer' . $i;
                 $questionnaireValues[] = doubleval($data[$answerKey]);
             }
-    
+
             // Retrieve all symptoms
             $symptoms = Symptom::all();
-    
+
             // Initialize $items array to store symptom values
             $items = [];
             foreach ($symptoms as $key => $symptom) {
@@ -111,30 +112,30 @@ class Calculation extends Page
                     'value' => doubleval($questionnaireValues[$key]) * $symptom->belief,
                 ];
             }
-    
+
             // Retrieve all diseases and initialize $combine array
             $diseases = Disease::pluck('name', 'id')->map(function ($name) {
                 return [$name, 0];
             })->toArray();
-    
+
             // Initialize $combine array with keys same as $diseases
             $diseaseIds = array_keys($diseases);
             $combine = array_fill_keys($diseaseIds, []);
-    
+
             // Initialize $result array to store disease names and scores
             $result = [];
-    
+
             // Process rules and update $combine array
             foreach (Rule::all()->toArray() as $rule) {
                 $diseaseId = $rule['disease_id'];
                 $symptomId = $rule['symptom_id'];
-                
+
                 if (!isset($items[$symptomId])) {
                     continue; // Skip if symptom not found
                 }
-    
+
                 $value = $items[$symptomId]['value'];
-    
+
                 if (empty($combine[$diseaseId])) {
                     $combine[$diseaseId][] = $value;
                 } else {
@@ -142,19 +143,19 @@ class Calculation extends Page
                     $combine[$diseaseId][] = $prevValue + $value * (1 - $prevValue);
                 }
             }
-    
+
             // Calculate scores and populate $result array
             foreach ($diseases as $diseaseId => $diseaseInfo) {
                 $scores = $combine[$diseaseId];
                 $score = end($scores) * 100;
-    
+
                 $result[$diseaseId] = [
                     'name' => $diseaseInfo[0],
                     'score' => $score,
                 ];
             }
-            //dd($result);
-    
+            // dd($result);
+
             // Find disease with the highest score
             $maxScore = -1;
             $maxScoreDisease = null;
@@ -169,27 +170,45 @@ class Calculation extends Page
             if ($maxScoreDisease !== null) {
                 $disease = $maxScoreDisease['name'];
             } else {
-                $disease = "Unknown"; // Set default value if no disease is found
+                $disease = null; // Set default value if no disease is found
             }
 
             // Output the result
-            //dd($disease, $maxScore);
-    
+            // dd($disease, $maxScore);
+
+            $disease = Disease::where('name', $disease)->first()->id;
+
+            $calculation = ModelsCalculation::create([
+                'user_id' => auth()->user()->id, 'disease_id' => $disease,
+                'value' => $maxScore
+            ]);
+
+            foreach ($result as $key => $disease) {
+                $calculation->details()->create([
+                    'disease_id' => $key,
+                    'value' => $disease['score'],
+                ]);
+            }
+
+            foreach ($symptoms as $key => $symptom) {
+                $calculation->questionnaires()->create([
+                    'symptom_id' => $symptom->id,
+                    'answer' => $questionnaireValues[$key],
+                ]);
+            }
+
             // Send success notification
             Notification::make()
                 ->title('Saved successfully')
                 ->success()
                 ->send();
-    
+
             $this->redirect(route('filament.user.pages.calculation'));
         } catch (\Throwable $th) {
-            // Log and send error notification
-            dd($th);
             Notification::make()
                 ->title('An error occurred while calculating the data')
                 ->danger()
                 ->send();
         }
     }
-    
 }
