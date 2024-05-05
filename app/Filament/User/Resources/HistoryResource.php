@@ -15,6 +15,7 @@ use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 
 class HistoryResource extends Resource
 {
@@ -27,6 +28,11 @@ class HistoryResource extends Resource
     protected static ?string $pluralModelLabel = 'History';
 
     public static function canCreate(): bool
+    {
+        return false;
+    }
+
+    public static function canEdit(Model $record): bool
     {
         return false;
     }
