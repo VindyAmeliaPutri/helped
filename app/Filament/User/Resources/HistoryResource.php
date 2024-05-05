@@ -92,9 +92,10 @@ class HistoryResource extends Resource
             ->columns([
                 TextColumn::make('created_at')
                     ->date('Y-m-d'),
-                TextColumn::make('result')
-                    ->formatStateUsing(fn ($state) => $state == 'TYPE_2' ? 'Diabetest Type 2' : 'Diabetes Type 1'),
-
+                TextColumn::make('disease.name')
+                    ->label('Diagnosis'),
+                TextColumn::make('value')
+                    ->label('score'),
             ])
             ->filters([
                 //
