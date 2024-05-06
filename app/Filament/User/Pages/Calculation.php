@@ -203,7 +203,7 @@ class Calculation extends Page
                 ->success()
                 ->send();
 
-            $this->redirect(route('filament.user.pages.calculation'));
+            $this->redirect(route('filament.user.resources.histories.view', $calculation->id));
         } catch (\Throwable $th) {
             Notification::make()
                 ->title('An error occurred while calculating the data')
