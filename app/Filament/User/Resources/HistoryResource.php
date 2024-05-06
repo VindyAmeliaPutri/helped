@@ -60,8 +60,9 @@ class HistoryResource extends Resource
                             ->schema([
                                 TextEntry::make('created_at')
                                     ->label('Created at')
-                                    ->date('Y-m-d')
-                                    ->columnSpanFull(),
+                                    ->date('Y-m-d'),
+                                TextEntry::make('treatment')
+                                    ->default('Please contact the professional for further diagnosis and treatment'),
                                 TextEntry::make('disease.name')
                                     ->label('Diagnosis'),
                                 TextEntry::make('value')
