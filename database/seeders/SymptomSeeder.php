@@ -111,43 +111,43 @@ class SymptomSeeder extends Seeder
             ],
             [
                 'name' => 'Eating large meals over a period of time such as a 2-hour period',
-                'belief' => 0.5,
+                'belief' => 0.9,
             ],
             [
                 'name' => 'Chews much faster than normal people',
-                'belief' => 0,
+                'belief' => 0.8,
             ],
             [
                 'name' => 'Eating to the point of feeling too full and making your stomach growl',
-                'belief' => 0,
+                'belief' => 0.9,
             ],
             [
                 'name' => 'Can eat large portions even when not hungry',
-                'belief' => 0,
+                'belief' => 0.9,
             ],
             [
                 'name' => 'Eating secretly because she was embarrassed by the amount of food.',
-                'belief' => 0,
+                'belief' => 0.8,
             ],
             [
                 'name' => 'Feeling disgusted, depressed, ashamed, upset or guilty about yourself after eating',
-                'belief' => 0,
+                'belief' => 0.9,
             ],
             [
                 'name' => 'Frequent dieters but find it difficult to stick to a diet and lose weight',
-                'belief' => 0,
+                'belief' => 0.9,
             ],
             [
                 'name' => 'Hoarding food',
-                'belief' => 0,
+                'belief' => 0.6,
             ],
             [
                 'name' => 'Feeling sensitive, upset or angry when talking about food or hearing about body shaming',
-                'belief' => 0,
+                'belief' => 0.8,
             ],
             [
                 'name' => 'Having feelings of anxiety, hopelessness, and low self-confidence',
-                'belief' => 0,
+                'belief' => 0.9,
             ],
             [
                 'name' => 'Sudden or severe restriction of the type or amount of food eaten',
