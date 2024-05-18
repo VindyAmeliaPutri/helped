@@ -21,6 +21,8 @@ class Calculation extends Page
 
     protected static string $view = 'filament.user.pages.calculation';
 
+    protected static ?string $title = 'Diagnosis';
+
     public ?array $data = [];
 
     public function mount(): void
