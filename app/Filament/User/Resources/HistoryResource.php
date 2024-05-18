@@ -68,17 +68,6 @@ class HistoryResource extends Resource
                                 TextEntry::make('value')
                                     ->label('Value'),
                             ])->columns(),
-                        Tab::make('Analysis')
-                            ->schema([
-                                RepeatableEntry::make('details')
-                                    ->label(null)
-                                    ->schema([
-                                        TextEntry::make('disease.name'),
-                                        TextEntry::make('value'),
-                                    ])
-                                    ->columns(2),
-                            ]),
-
                         Tab::make('Questionaire')
                             ->schema([
                                 RepeatableEntry::make('questionnaires')
