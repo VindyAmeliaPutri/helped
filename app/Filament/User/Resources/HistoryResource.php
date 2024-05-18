@@ -61,12 +61,19 @@ class HistoryResource extends Resource
                                 TextEntry::make('created_at')
                                     ->label('Created at')
                                     ->date('Y-m-d'),
-                                TextEntry::make('treatment')
-                                    ->default('Please contact the professional for further diagnosis and treatment'),
                                 TextEntry::make('disease.name')
                                     ->label('Diagnosis'),
                                 TextEntry::make('value')
-                                    ->label('Value'),
+                                    ->label('Recomendation')
+                                    ->formatStateUsing(function ($state) {
+                                        if ($state <= 40) {
+                                            return 'Do healthy routine and please proceed life as usual, may you be blessed';
+                                        } else if ($state > 40 && $state <= 70) {
+                                            return 'Proceed life as usual, please contact the doctor if you feel more symptoms';
+                                        } else if ($state > 70 && $state <= 100) {
+                                            return 'Please contact the doctor immediately';
+                                        }
+                                    }),
                             ])->columns(),
                         Tab::make('Questionaire')
                             ->schema([
@@ -91,7 +98,16 @@ class HistoryResource extends Resource
                 TextColumn::make('disease.name')
                     ->label('Diagnosis'),
                 TextColumn::make('value')
-                    ->label('score'),
+                    ->label('Recomendation')
+                    ->formatStateUsing(function ($state) {
+                        if ($state <= 40) {
+                            return 'Do healthy routine and please proceed life as usual, may you be blessed';
+                        } else if ($state > 40 && $state <= 70) {
+                            return 'Proceed life as usual, please contact the doctor if you feel more symptoms';
+                        } else if ($state > 70 && $state <= 100) {
+                            return 'Please contact the doctor immediately';
+                        }
+                    }),
             ])
             ->filters([
                 //
