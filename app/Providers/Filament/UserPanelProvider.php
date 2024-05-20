@@ -28,6 +28,7 @@ class UserPanelProvider extends PanelProvider
             ->id('user')
             ->path('')
             ->login()
+            ->sidebarCollapsibleOnDesktop()
             ->colors([
                 'primary' => Color::Fuchsia,
             ])

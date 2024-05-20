@@ -4,7 +4,7 @@
   </h2>
 
   <x-filament::section style="margin-top: 2rem">
-    <a href="#" style="display: block">
+    <a href="{{ route('filament.user.pages..articles.{article}', \Illuminate\Support\Str::slug('What is binge eating disorder')) }}" style="display: block">
       <h3 class="text-2xl font-bold">What is binge eating disorder</h3>
       <p class="text-sm" style="margin-top: .5rem">
         Binge Eating Disorder (BED) has been discussed as a disordered eating behavior since the 1950’s but was not
