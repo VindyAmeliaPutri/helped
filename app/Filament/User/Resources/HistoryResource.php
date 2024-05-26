@@ -75,6 +75,18 @@ class HistoryResource extends Resource
                                         }
                                     }),
                             ])->columns(),
+                        Tab::make('Analysis')
+                            ->schema([
+                                RepeatableEntry::make('details')
+                                    ->label(null)
+                                    ->schema([
+                                        TextEntry::make('disease.name'),
+                                        TextEntry::make('value')
+                                            ->label('Score')
+                                            ->formatStateUsing(fn ($state) => number_format($state, 2, '.', '')),
+                                    ])
+                                    ->columns(2),
+                            ]),
                         Tab::make('Questionaire')
                             ->schema([
                                 RepeatableEntry::make('questionnaires')
